@@ -8,6 +8,10 @@ const startButton = document.getElementById('start');
 const pauseButton = document.getElementById('pause');
 const resetButton = document.getElementById('reset');
 const modeText = document.getElementById('mode-text');
+const modeSwitch = document.getElementById('mode-switch');
+let isWorkMode = true;
+let workTime = 25 * 60; // 25 minutes in seconds
+let restTime = 5 * 60;  // 5 minutes in seconds
 
 function updateDisplay() {
     const minutes = Math.floor(timeLeft / 60);
@@ -48,6 +52,23 @@ function resetTimer() {
     timeLeft = 25 * 60;
     modeText.textContent = 'Work Time';
     updateDisplay();
+}
+
+function toggleMode() {
+    isWorkMode = !isWorkMode;
+    timeLeft = isWorkMode ? workTime : restTime;
+    modeText.textContent = isWorkMode ? 'Work Mode' : 'Rest Mode';
+    updateDisplay();
+}
+
+modeSwitch.addEventListener('change', toggleMode);
+
+// Update your reset function
+function reset() {
+    clearInterval(timerInterval);
+    timeLeft = isWorkMode ? workTime : restTime;
+    updateDisplay();
+    startButton.disabled = false;
 }
 
 startButton.addEventListener('click', startTimer);
